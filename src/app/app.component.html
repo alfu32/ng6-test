@@ -1,0 +1,98 @@
+<div class="main-container">
+    <div class="alert alert-app-level">
+        ...app level alert ...
+    </div>
+    <header class="header header-6">
+          
+      <img width="30" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+      <h3>Database [{{lists.length}}]</h3>
+    </header>
+    <nav class="subnav">
+      <div clrForm>
+        <span><input clrInput type="text" [(ngModel)]="data.newListName"/></span>
+        <span><button class="btn btn-primary" (click)="createList(data.newListName)">Create</button></span>
+      </div>
+    </nav>
+    <div class="content-container">
+        <div class="content-area">
+          <div *ngIf="data.selectedList">
+            <h1>{{list}}</h1>
+            <div>
+              <span><input clrInput type="text" [(ngModel)]="data.newItemName"/></span>
+              <span><button class="btn btn-primary" (click)="createItem(data.selectedList,data.newItemName)">Create Item</button></span>
+            </div>
+            <div *ngFor="let item of data.selectedList.items"
+              class="list-item">
+              <small>{{item.id}}</small>
+              <span>{{item.name}}</span>
+              <button class="btn btn-outline" (click)="deleteItem(data.selectedList,item)">Delete</button>
+            </div>
+          </div>
+        </div>
+        <nav class="sidenav">
+          <div>
+            <span><input clrInput type="text" [(ngModel)]="data.searchTerm"/></span>
+            <span><button class="btn btn-outline" (click)="filterList(data.searchTerm)">Filter</button></span>
+          </div>
+          <div *ngFor="let list of lists" (click)="selectList(list)"
+            [ngClass]="{'selected':list===data.selectedList}"
+            class="list">
+            <small>{{list.id}}</small>
+            <span>{{list.name}}</span>
+            <sup>{{list.items.length}} items</sup>
+            <button class="btn btn-outline" (click)="deleteList(list)">Delete</button>
+          </div>
+        </nav>
+    </div>
+</div>
+
+
+
+
+<!--The content below is only a placeholder and can be replaced.-->
+<!--div class="layout">
+  <div class="top-bar">
+
+    <img width="30" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+    <h3>Database [{{lists.length}}]</h3>
+    <div>
+      <span><input type="text" [(ngModel)]="data.newListName"/></span>
+      <span><button (click)="createList(data.newListName)">Create</button></span>
+    </div>
+    <div>
+      <span><input type="text" [(ngModel)]="data.searchTerm"/></span>
+      <span><button (click)="filterList(data.searchTerm)">Filter</button></span>
+    </div>
+  </div>
+  <div class="middle">
+    <div class="left-panel">
+      <div *ngFor="let list of lists" (click)="selectList(list)"
+        [ngClass]="{'selected':list===data.selectedList}"
+        class="list">
+        <small>{{list.id}}</small>
+        <span>{{list.name}}</span>
+        <sup>{{list.items.length}} items</sup>
+        <button (click)="deleteList(list)">Delete</button>
+      </div>
+    </div>
+    <div class="main-panel">
+      <div *ngIf="data.selectedList">
+        <h1>{{list}}</h1>
+        <div>
+          <span><input type="text" [(ngModel)]="data.newItemName"/></span>
+          <span><button (click)="createItem(data.selectedList,data.newItemName)">Create Item</button></span>
+        </div>
+        <div *ngFor="let item of data.selectedList.items"
+          class="list-item">
+          <small>{{item.id}}</small>
+          <span>{{item.name}}</span>
+          <button (click)="deleteItem(data.selectedList,item)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <pre>
+    {{ data | json }}
+  </pre>
+</div-->
+
