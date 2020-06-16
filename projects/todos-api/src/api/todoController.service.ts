@@ -66,15 +66,15 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerCount(?: , observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
-    public todoControllerCount(?: , observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
-    public todoControllerCount(?: , observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
-    public todoControllerCount(?: , observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoControllerCount(params?: any, observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
+    public todoControllerCount(params?: any, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
+    public todoControllerCount(params?: any, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
+    public todoControllerCount(params?: any, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if ( !== undefined &&  !== null) {
-            queryParameters = queryParameters.set('where', <any>);
+        if (params !== undefined && params !== null) {
+            queryParameters = queryParameters.set('where', <any>params);
         }
 
         let headers = this.defaultHeaders;
@@ -194,15 +194,15 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerFind(?: , observe?: 'body', reportProgress?: boolean): Observable<Array<TodoWithRelations>>;
-    public todoControllerFind(?: , observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TodoWithRelations>>>;
-    public todoControllerFind(?: , observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TodoWithRelations>>>;
-    public todoControllerFind(?: , observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoControllerFind(params?: any, observe?: 'body', reportProgress?: boolean): Observable<Array<TodoWithRelations>>;
+    public todoControllerFind(params?: any, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TodoWithRelations>>>;
+    public todoControllerFind(params?: any, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TodoWithRelations>>>;
+    public todoControllerFind(params?: any, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if ( !== undefined &&  !== null) {
-            queryParameters = queryParameters.set('filter', <any>);
+        if (params !== undefined && params !== null) {
+            queryParameters = queryParameters.set('filter', <any>params);
         }
 
         let headers = this.defaultHeaders;
@@ -239,10 +239,10 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerFindById(id: number, ?: , observe?: 'body', reportProgress?: boolean): Observable<TodoWithRelations>;
-    public todoControllerFindById(id: number, ?: , observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TodoWithRelations>>;
-    public todoControllerFindById(id: number, ?: , observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TodoWithRelations>>;
-    public todoControllerFindById(id: number, ?: , observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoControllerFindById(id: number, params?: any, observe?: 'body', reportProgress?: boolean): Observable<TodoWithRelations>;
+    public todoControllerFindById(id: number, params?: any, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TodoWithRelations>>;
+    public todoControllerFindById(id: number, params?: any, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TodoWithRelations>>;
+    public todoControllerFindById(id: number, params?: any, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling todoControllerFindById.');
@@ -250,8 +250,8 @@ export class TodoControllerService {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if ( !== undefined &&  !== null) {
-            queryParameters = queryParameters.set('filter', <any>);
+        if (params !== undefined && params !== null) {
+            queryParameters = queryParameters.set('filter', <any>params);
         }
 
         let headers = this.defaultHeaders;
@@ -336,16 +336,16 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerUpdateAll(body?: TodoPartial, ?: , observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
-    public todoControllerUpdateAll(body?: TodoPartial, ?: , observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
-    public todoControllerUpdateAll(body?: TodoPartial, ?: , observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
-    public todoControllerUpdateAll(body?: TodoPartial, ?: , observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoControllerUpdateAll(body?: TodoPartial, params?: any, observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
+    public todoControllerUpdateAll(body?: TodoPartial, params?: any, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
+    public todoControllerUpdateAll(body?: TodoPartial, params?: any, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
+    public todoControllerUpdateAll(body?: TodoPartial, params?: any, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if ( !== undefined &&  !== null) {
-            queryParameters = queryParameters.set('where', <any>);
+        if (params !== undefined && params !== null) {
+            queryParameters = queryParameters.set('where', <any>params);
         }
 
         let headers = this.defaultHeaders;

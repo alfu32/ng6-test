@@ -1,11 +1,11 @@
-bimport { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
+import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { PingControllerService } from './src/api/pingController.service';
-import { SmartHomeControllerService } from './src/api/smartHomeController.service';
-import { TodoControllerService } from './src/api/todoController.service';
+import { PingControllerService } from './api/pingController.service';
+import { SmartHomeControllerService } from './api/smartHomeController.service';
+import { TodoControllerService } from './api/todoController.service';
 
 @NgModule({
   imports:      [],
