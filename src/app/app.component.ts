@@ -3,6 +3,7 @@ import { ListService } from './list.service';
 import { ListData, ItemData } from './list-item/list-item.data';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { TodoControllerService }  from '../../projects/todos-api/dist/public_api.d';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent {
   lists:Array<ListData> = [{id:'x',name:'x',items:[]}];
   constructor(
     public service: ListService,
+    public todosService: TodoControllerService,
   ) {
     const sub = service.findAllList().pipe( take(1) )
     .subscribe( lsts => {
