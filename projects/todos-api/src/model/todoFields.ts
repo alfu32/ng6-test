@@ -13,5 +13,6 @@
 export interface TodoFields { 
     id?: boolean;
     title?: boolean;
-    isComplete?: boolean;
+    status?: string;
+    todoListId?: boolean;
 }

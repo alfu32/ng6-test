@@ -9,15 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { TodoFields } from './todoFields';
-import { TodoIncludeFilterItems } from './todoIncludeFilterItems';
+import { TodoListFields } from './todoListFields';
+import { TodoListIncludeFilterItems } from './todoListIncludeFilterItems';
 
-export interface TodoFilter1 { 
+export interface TodoListFilter { 
     offset?: number;
     limit?: number;
     skip?: number;
     order?: Array<string>;
-    where?: { [key: string]: any; };
-    fields?: TodoFields;
-    include?: Array<TodoIncludeFilterItems>;
+    fields?: TodoListFields;
+    include?: Array<TodoListIncludeFilterItems>;
 }

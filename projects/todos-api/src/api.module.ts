@@ -1,20 +1,30 @@
 import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
 import { Configuration } from './configuration';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
-import { PingControllerService } from './api/pingController.service';
-import { SmartHomeControllerService } from './api/smartHomeController.service';
 import { TodoControllerService } from './api/todoController.service';
+import { TodoListControllerService } from './api/todoListController.service';
+import { TodoListTodoControllerService } from './api/todoListTodoController.service';
+import { TodoListUserControllerService } from './api/todoListUserController.service';
+import { TodoTodoListControllerService } from './api/todoTodoListController.service';
+import { UserControllerService } from './api/userController.service';
+import { UserTodoListControllerService } from './api/userTodoListController.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
-  exports:      [],
+  exports:      [
+      HttpClientModule,
+  ],
   providers: [
-    PingControllerService,
-    SmartHomeControllerService,
-    TodoControllerService ]
+    TodoControllerService,
+    TodoListControllerService,
+    TodoListTodoControllerService,
+    TodoListUserControllerService,
+    TodoTodoListControllerService,
+    UserControllerService,
+    UserTodoListControllerService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {

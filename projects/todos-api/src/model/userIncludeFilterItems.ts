@@ -9,10 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { UserScopeFilter } from './userScopeFilter';
 
-export interface Todo {
-    id?: number;
-    title?: string;
-    status?: string;
-    todoListId?: number;
+export interface UserIncludeFilterItems { 
+    relation?: string;
+    scope?: UserScopeFilter;
 }

@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface Todo {
-    id?: number;
-    title?: string;
-    status?: string;
-    todoListId?: number;
+export interface TodoScopeFilter { 
+    offset?: number;
+    limit?: number;
+    skip?: number;
+    order?: Array<string>;
+    where?: { [key: string]: any; };
+    fields?: { [key: string]: any; };
 }

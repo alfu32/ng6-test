@@ -9,15 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { TodoListWithRelations } from './todoListWithRelations';
 
 /**
- * (tsType: TodoWithRelations, schemaOptions: { includeRelations: true })
+ * (tsType: Partial<TodoList>, schemaOptions: { partial: true })
  */
-export interface TodoWithRelations {
+export interface TodoListPartial { 
     id?: number;
     title?: string;
-    status?: string;
-    todoListId?: number;
-    todos?: TodoListWithRelations;
+    userId?: number;
 }

@@ -12,12 +12,12 @@
 import { TodoListWithRelations } from './todoListWithRelations';
 
 /**
- * (tsType: TodoWithRelations, schemaOptions: { includeRelations: true })
+ * (tsType: UserWithRelations, schemaOptions: { includeRelations: true })
  */
-export interface TodoWithRelations {
+export interface UserWithRelations { 
     id?: number;
-    title?: string;
-    status?: string;
-    todoListId?: number;
-    todos?: TodoListWithRelations;
+    name?: string;
+    email: string;
+    active?: boolean;
+    todoLists?: Array<TodoListWithRelations>;
 }

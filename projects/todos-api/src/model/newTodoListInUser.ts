@@ -11,11 +11,9 @@
  */
 
 /**
- * (tsType: Partial<Todo>, schemaOptions: { partial: true })
+ * (tsType: @loopback/repository-json-schema#Optional<Omit<TodoList, 'id'>, 'userId'>, schemaOptions: { title: 'NewTodoListInUser', exclude: [ 'id' ], optional: [ 'userId' ] })
  */
-export interface TodoPartial { 
-    id?: number;
-    title?: string;
-    status?: string;
-    todoListId?: number;
+export interface NewTodoListInUser { 
+    title: string;
+    userId?: number;
 }

@@ -1,9 +1,26 @@
 import { Component } from '@angular/core';
 import { ListService } from './list.service';
-import { ListData, ItemData } from './list-item/list-item.data';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { TodoControllerService }  from '../../projects/todos-api/dist/public_api.d';
+import {
+  TodoControllerService,
+  TodoWithRelations,
+  TodoList,
+  TodoListControllerService,
+  TodoListWithRelations,
+  TodoTodoListControllerService,
+  TodoListTodoControllerService,
+  Todo,
+  NewTodoList,
+  NewTodoInTodoList,
+  LoopbackCount,
+} from '../external/todos-api.external.module';
+
+export interface TodoListComposite {
+  list: TodoListWithRelations;
+  todos: Array<Todo>;
+  todosCount: number;
+}
 
 @Component({
   selector: 'app-root',
@@ -12,49 +29,129 @@ import { TodoControllerService }  from '../../projects/todos-api/dist/public_api
 })
 export class AppComponent {
   title = 'ng6-app';
-  inName = "list";
-  inSearch = "list";
-  data = {
+  inName = 'list';
+  inSearch = 'list';
+  data: {
+    newListName: string;
+    newItemName: string;
+    searchTerm: string;
+    selectedList: TodoListComposite;
+    selectedItem: Todo;
+  } = {
     newListName: 'L',
-    newItemName:'x',
-    searchTerm:'x',
+    newItemName: 'x',
+    searchTerm: 'x',
     selectedList: null,
     selectedItem: null,
   };
-  
-  lists:Array<ListData> = [{id:'x',name:'x',items:[]}];
+  controls = {
+    createListModal: false,
+    createItemModal: false,
+    editItemModal: false,
+    editListFlags: false,
+    editTodosFlags: false,
+  };
+  statuses = new Array<string>();
+  lists: Array<TodoListComposite> = [];
   constructor(
     public service: ListService,
     public todosService: TodoControllerService,
+    public todoListTodoService: TodoListTodoControllerService,
+    public todoListsService: TodoListControllerService,
   ) {
-    const sub = service.findAllList().pipe( take(1) )
-    .subscribe( lsts => {
-      this.lists = lsts;
-      sub.unsubscribe();
+    this.todosService.todoControllerStatuses().subscribe(
+      r => {
+        this.statuses = r;
+      }
+    )
+    this.todoListsService.todoListControllerFind()
+    .subscribe( (v: TodoListWithRelations[]) => {
+        console.log(v);
+        v.forEach(
+          list => {
+            this.todoListTodoService.todoListTodoControllerFind(list.id)
+              .subscribe((todos: Todo[]) => {
+                list.todos = todos;
+              });
+            const composite = { list, todos: [], todosCount: 0};
+
+            this.todoListsService.todoControllerCountById(list.id)
+              .subscribe((count: LoopbackCount) => {
+                composite.todosCount = count.count;
+              });
+            this.lists.push(composite);
+          }
+        );
+      });
+  }
+  createList(name) {
+    this.todoListsService.todoListControllerCreate({
+      title: name,
+      userId: 1
     })
+    .subscribe(
+      (list: TodoList) => {
+        console.log(list);
+        this.lists.push({ list, todos: [], todosCount: 0 });
+      }
+    );
   }
-  createList(name){
-    this.service.createList(name).pipe(take(1))
-    .subscribe( v => {
-      
-    })
+  filterList(name) {
+
   }
-  filterList(name){
-    
+  selectList(list: TodoListComposite) {
+    this.todoListTodoService.todoListTodoControllerFind(list.list.id)
+      .subscribe((todos: Todo[]) => {
+        list.todos = todos;
+      });
+    this.data.selectedList = <TodoListComposite>list;
   }
-  selectList(list){
-    this.data.selectedList=list;
+  deleteList(list) {
+
   }
-  deleteList(list){
-    
-  }
-  createItem(list, item){
+  createItem(list, item) {
+    this.todoListTodoService.todoListTodoControllerCreate(
+      this.data.selectedList.list.id, {
+        title: this.data.newItemName,
+        status: 'todo',
+      })
+      .subscribe(
+        (v: Todo) => {
+          this.data.selectedList.todos.push(v);
+          this.data.selectedList.todosCount++;
+        }
+      )
     this.service.addNewItem(list.id).pipe(take(1))
     .subscribe( v => {
-      
+      this.controls.createItemModal = false;
     });
   }
-  deleteItem(list,item){
-    
+  editItem(item) {
+    this.controls.editItemModal = true;
+    this.data.selectedItem = {...item};
+
+  }
+  saveItem(item: TodoWithRelations) {
+    this.controls.editItemModal = false;
+    this.todosService.todoControllerUpdateById(
+      item.id, {
+      id: item.id,
+      title: item.title,
+      status: item.status,
+      todoListId: item.todoListId,
+    }).subscribe(
+      r => {
+        const found = this.data.selectedList.todos.find( t => t.id === item.id );
+        found.title = item.title;
+        found.status = item.status;
+      },
+      err => {
+        console.error(err);
+      }
+    );
+
+  }
+  deleteItem(list, item) {
+
   }
 }

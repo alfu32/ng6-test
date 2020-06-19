@@ -10,9 +10,8 @@
  * Do not edit the class manually.
  */
 
-export interface Todo {
+export interface TodoList { 
     id?: number;
-    title?: string;
-    status?: string;
-    todoListId?: number;
+    title: string;
+    userId?: number;
 }

@@ -10,9 +10,10 @@
  * Do not edit the class manually.
  */
 
-export interface Todo {
-    id?: number;
-    title?: string;
-    status?: string;
-    todoListId?: number;
+/**
+ * (tsType: Omit<TodoList, 'id'>, schemaOptions: { title: 'NewTodoList', exclude: [ 'id' ] })
+ */
+export interface NewTodoList { 
+    title: string;
+    userId?: number;
 }
