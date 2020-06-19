@@ -13,8 +13,9 @@
 /**
  * (tsType: Omit<Todo, 'id'>, schemaOptions: { title: 'NewTodo', exclude: [ 'id' ] })
  */
-export interface NewTodo { 
+export interface NewTodo {
     title?: string;
     status?: string;
+    dueDate?: Date;
     todoListId?: number;
 }

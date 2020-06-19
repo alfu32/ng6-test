@@ -18,6 +18,7 @@ export interface TodoWithRelations {
     id?: number;
     title?: string;
     status?: string;
+    dueDate?: Date;
     todoListId?: number;
     todos?: TodoListWithRelations;
 }

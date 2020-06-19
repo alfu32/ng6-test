@@ -34,12 +34,14 @@ export class AppComponent {
   data: {
     newListName: string;
     newItemName: string;
+    newItemDueDate: Date;
     searchTerm: string;
     selectedList: TodoListComposite;
     selectedItem: Todo;
   } = {
     newListName: 'L',
     newItemName: 'x',
+    newItemDueDate: new Date(),
     searchTerm: 'x',
     selectedList: null,
     selectedItem: null,
@@ -114,6 +116,7 @@ export class AppComponent {
       this.data.selectedList.list.id, {
         title: this.data.newItemName,
         status: 'todo',
+        dueDate: this.data.newItemDueDate,
       })
       .subscribe(
         (v: Todo) => {
@@ -129,6 +132,9 @@ export class AppComponent {
   editItem(item) {
     this.controls.editItemModal = true;
     this.data.selectedItem = {...item};
+    this.data.selectedItem.created = (this.data.selectedItem.created).toISOString().substr(0, 10);
+    this.data.selectedItem.updated = (this.data.selectedItem.updated).toISOString().substr(0, 10);
+    this.data.selectedItem.dueDate = (this.data.selectedItem.dueDate).toISOString().substr(0, 10);
 
   }
   saveItem(item: TodoWithRelations) {
@@ -138,6 +144,7 @@ export class AppComponent {
       id: item.id,
       title: item.title,
       status: item.status,
+      dueDate: new Date(item.dueDate),
       todoListId: item.todoListId,
     }).subscribe(
       r => {

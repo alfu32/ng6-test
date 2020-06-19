@@ -14,5 +14,8 @@ export interface Todo {
     id?: number;
     title?: string;
     status?: string;
+    created?: Date;
+    updated?: Date;
+    dueDate?: Date;
     todoListId?: number;
 }

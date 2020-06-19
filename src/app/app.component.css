@@ -36,3 +36,6 @@
 [status='done']{
   color: #171;
 }
+::ng-deep .clr-popover-content.datepicker{
+  z-index: 9000;
+}
