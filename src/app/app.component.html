@@ -107,11 +107,7 @@
       </clr-select-container>
       <clr-date-container>
         <label>Due</label>
-        <input type="date" clrDate name="due-date" [(ngModel)]="data.selectedItem.dueDate">
-      </clr-date-container>
-      <clr-date-container>
-        <label>Created Date</label>
-        <input type="date" clrDate name="created-date" [(ngModel)]="data.selectedItem.created">
+        <input type="date" clrDate name="due-date" [ngModel]="data.selectedItem.dueDate.toString().substr(0,10)" (ngModelChange)="data.selectedItem.dueDate=new_Date($event)")>
       </clr-date-container>
       <small style="display:block"><strong>Due Date</strong><span>{{data.selectedItem.dueDate | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
       <small style="display:block"><strong>Created</strong><span>{{data.selectedItem.created | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>

@@ -137,6 +137,9 @@ export class AppComponent {
     this.data.selectedItem.dueDate = (this.data.selectedItem.dueDate).toISOString().substr(0, 10) as unknown as Date;
 
   }
+  new_Date($event) {
+    return new Date($event);
+  }
   saveItem(item: TodoWithRelations) {
     this.controls.editItemModal = false;
     this.todosService.todoControllerUpdateById(
