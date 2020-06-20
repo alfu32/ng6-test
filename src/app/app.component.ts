@@ -28,20 +28,22 @@ export interface TodoListComposite {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  static TODO_WARNING_DELAY = 7 * 86400000;
   title = 'ng6-app';
   inName = 'list';
   inSearch = 'list';
   data: {
     newListName: string;
-    newItemName: string;
-    newItemDueDate: Date;
+    newItem: Todo;
     searchTerm: string;
     selectedList: TodoListComposite;
     selectedItem: Todo;
   } = {
     newListName: 'L',
-    newItemName: 'x',
-    newItemDueDate: new Date(),
+    newItem: {
+      title: '',
+      dueDate: new Date()
+    },
     searchTerm: 'x',
     selectedList: null,
     selectedItem: null,
@@ -108,15 +110,27 @@ export class AppComponent {
       });
     this.data.selectedList = <TodoListComposite>list;
   }
+  saveList(list: TodoList) {
+    this.todoListsService.todoListControllerUpdateById(
+      list.id,
+      {
+        id: list.id,
+        title: list.title,
+      }
+    ).subscribe(
+      r => {},
+      err => {}
+    )
+  }
   deleteList(list) {
 
   }
-  createItem(list, item) {
+  createItem(list, item: Todo) {
     this.todoListTodoService.todoListTodoControllerCreate(
       this.data.selectedList.list.id, {
-        title: this.data.newItemName,
+        title: this.data.newItem.title,
         status: 'todo',
-        dueDate: this.data.newItemDueDate,
+        dueDate: this.data.newItem.dueDate,
       })
       .subscribe(
         (v: Todo) => {
@@ -132,13 +146,17 @@ export class AppComponent {
   editItem(item) {
     this.controls.editItemModal = true;
     this.data.selectedItem = {...item};
-    this.data.selectedItem.created = (this.data.selectedItem.created).toISOString().substr(0, 10) as unknown as Date;
-    this.data.selectedItem.updated = (this.data.selectedItem.updated).toISOString().substr(0, 10) as unknown as Date;
-    this.data.selectedItem.dueDate = (this.data.selectedItem.dueDate).toISOString().substr(0, 10) as unknown as Date;
+    this.data.selectedItem.created = new Date(this.data.selectedItem.created);
+    this.data.selectedItem.updated = new Date(this.data.selectedItem.updated);
+    this.data.selectedItem.dueDate = new Date(this.data.selectedItem.dueDate);
 
   }
-  new_Date($event) {
-    return new Date($event);
+  getDueDate(item: Todo){
+    return item.dueDate.toString().substr(0, 10);
+  }
+  setDueDate(item: Todo, $event) {
+    console.log('setDueDate', $event);
+    return item.dueDate = new Date($event);
   }
   saveItem(item: TodoWithRelations) {
     this.controls.editItemModal = false;
@@ -154,6 +172,7 @@ export class AppComponent {
         const found = this.data.selectedList.todos.find( t => t.id === item.id );
         found.title = item.title;
         found.status = item.status;
+        found.dueDate = item.dueDate;
       },
       err => {
         console.error(err);
@@ -163,5 +182,14 @@ export class AppComponent {
   }
   deleteItem(list, item) {
 
+  }
+  cmpOver(date) {
+    return (new Date(date).getTime() - new Date().getTime()) < -AppComponent.TODO_WARNING_DELAY;
+  }
+  cmpNear(date) {
+    return Math.abs(new Date(date).getTime() - new Date().getTime()) < AppComponent.TODO_WARNING_DELAY;
+  }
+  cmpFar(date) {
+    return (new Date(date).getTime() - new Date().getTime()) > AppComponent.TODO_WARNING_DELAY;
   }
 }
