@@ -132,9 +132,9 @@ export class AppComponent {
   editItem(item) {
     this.controls.editItemModal = true;
     this.data.selectedItem = {...item};
-    this.data.selectedItem.created = (this.data.selectedItem.created).toISOString().substr(0, 10);
-    this.data.selectedItem.updated = (this.data.selectedItem.updated).toISOString().substr(0, 10);
-    this.data.selectedItem.dueDate = (this.data.selectedItem.dueDate).toISOString().substr(0, 10);
+    this.data.selectedItem.created = (this.data.selectedItem.created).toISOString().substr(0, 10) as unknown as Date;
+    this.data.selectedItem.updated = (this.data.selectedItem.updated).toISOString().substr(0, 10) as unknown as Date;
+    this.data.selectedItem.dueDate = (this.data.selectedItem.dueDate).toISOString().substr(0, 10) as unknown as Date;
 
   }
   saveItem(item: TodoWithRelations) {
