@@ -23,9 +23,9 @@
               <h1>{{data.selectedList.list.title}}</h1>
               <div class="btn-group btn-primary btn-sm">
                 <div class="btn" (click)="modals.createItem = true">Add</div>
-                <div class="btn" (click)="modals.editList = true">Edit</div>
-                <div class="btn btn-outline" (click)="copyList(item)">Copy</div>
-                <div class="btn btn-danger" (click)="deleteList(list)">Delete</div>
+                <div class="btn" (click)="editList(data.selectedList)">Edit</div>
+                <div class="btn btn-outline" (click)="copyList(data.selectedList)">Copy</div>
+                <div class="btn btn-danger" (click)="deleteList(data.selectedList)">Delete</div>
               </div>
             </div>
             <div class="clr-row">
@@ -73,7 +73,7 @@
   <h3 class="modal-title">Create List</h3>
   <clr-input-container>
     <label>Title</label>
-    <input clrInput type="text" name="title" [(ngModel)]="data.newListName" />
+    <input clrInput type="text" name="list-title" [(ngModel)]="data.newListName" />
   </clr-input-container>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="modals.createList = false">Cancel</button>
@@ -81,15 +81,17 @@
   </div>
 </clr-modal>
 
-<clr-modal [(clrModalOpen)]="modals.editList" *ngIf="modals.editList">
-  <h3 class="modal-title">Edit List</h3>
-  <clr-input-container>
-    <label>Title</label>
-    <input clrInput type="text" name="title" [(ngModel)]="data.selectedList.title" />
-  </clr-input-container>
+<clr-modal [(clrModalOpen)]="controls.editListModal" *ngIf="data.editingList">
+  <h3 class="modal-title">Edit List <em>{{data.editingList.title}}</em></h3>
+  <div class="modal-body">
+    <clr-input-container>
+      <label>Title</label>
+      <input clrInput type="text" name="list-title" [(ngModel)]="data.editingList.title" />
+    </clr-input-container>
+  </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="modals.editList = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="saveList(data.selectedList);modals.selectedList = false">Save</button>
+    <button type="button" class="btn btn-outline" (click)="controls.editListModal = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="saveList(data.editingList)">Save</button>
   </div>
 </clr-modal>
 
@@ -111,7 +113,7 @@
   </div>
 </clr-modal>
 
-<clr-modal [(clrModalOpen)]="controls.editItemModal">
+<clr-modal [(clrModalOpen)]="controls.editItemModal" *ngIf="data.selectedItem">
   <h3 class="modal-title">Edit Todo</h3>
   <div class="modal-body">
     <form name="edit-todo" clrForm *ngIf="controls.editItemModal">

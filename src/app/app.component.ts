@@ -37,6 +37,7 @@ export class AppComponent {
     newItem: Todo;
     searchTerm: string;
     selectedList: TodoListComposite;
+    editingList: TodoList;
     selectedItem: Todo;
   } = {
     newListName: 'L',
@@ -46,13 +47,14 @@ export class AppComponent {
     },
     searchTerm: 'x',
     selectedList: null,
+    editingList: null,
     selectedItem: null,
   };
   controls = {
     createListModal: false,
     createItemModal: false,
+    editListModal: false,
     editItemModal: false,
-    editListFlags: false,
     editTodosFlags: false,
   };
   statuses = new Array<string>();
@@ -100,6 +102,12 @@ export class AppComponent {
       }
     );
   }
+  editList(list: TodoListComposite) {
+    console.log('edit list', list);
+    this.controls.editListModal = true;
+    this.data.editingList = { ...list.list };
+
+  }
   filterList(name) {
 
   }
@@ -118,8 +126,13 @@ export class AppComponent {
         title: list.title,
       }
     ).subscribe(
-      r => {},
-      err => {}
+      r => {
+        this.controls.editListModal = false;
+        this.data.selectedList.list.title = list.title;
+      },
+      err => {
+        alert('save error');
+      }
     )
   }
   deleteList(list) {
