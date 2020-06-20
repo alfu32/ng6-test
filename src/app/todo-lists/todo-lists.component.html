@@ -1,0 +1,141 @@
+<input type="hidden" #modals>
+<input type="hidden" #selection>
+<div class="content-container">
+  <div class="content-area">
+    <!--
+          <pre>{{data.selectedItem | json}}</pre>
+          <pre>{{controls.editItemModal | json}}</pre>
+          <pre>{{controls.editItemModal | json}}</pre>
+          -->
+    <div *ngIf="data.selectedList">
+      <div>
+        <h1>{{data.selectedList.list.title}}</h1>
+        <div class="btn-group btn-primary btn-sm">
+          <div class="btn" (click)="modals.createItem = true">Add</div>
+          <div class="btn" (click)="editList(data.selectedList)">Edit</div>
+          <div class="btn btn-outline" (click)="copyList(data.selectedList)">Copy</div>
+          <div class="btn btn-danger" (click)="deleteList(data.selectedList)">Delete</div>
+        </div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-4" *ngFor="let status of statuses" style="border-right:1px dotted #777;">
+          <h2 style="text-align: center;">{{status}}</h2>
+          <div *ngFor="let todo of data.selectedList.todos" class="list-item">
+            <div *ngIf="todo.status === status" (click)="editItem(todo);">
+              <span class="badge" [ngClass]="{
+                        'badge-danger': cmpOver(todo.dueDate),
+                        'badge-warning': cmpNear(todo.dueDate),
+                        'badge-info': cmpFar(todo.dueDate)
+                      }">#{{todo.id}}</span>
+              <span>{{todo.title}}</span>
+              <div style="margin-left: 24px">
+                <small style="display:block"><strong>Due</strong> :
+                  <span>{{todo.dueDate | date: 'yyyy-MM-dd'}}</span></small>
+                <!--small style="display:block"><strong>Created</strong> : <span>{{todo.created | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
+                        <small-- style="display:block"><strong>Updated</strong> : <span>{{todo.updated | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="sidenav">
+    <div *ngFor="let item of lists" [ngClass]="{'selected':item===data.selectedList}" class="list">
+      <div (click)="selectList(item)" style="display:inline-block">
+        <span>#{{item.list.id}}</span>
+        <span> {{item.list.title}} </span>
+        <span class="badge badge-blue float-right" style="display:inline-block">{{item.todosCount}}</span>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-link float-right" (click)="modals.createList = true" title="Create List"
+        style="min-width:48px;max-width:48px;max-height:48px;min-height:48px;border-radius:50%">
+        <clr-icon shape="plus-circle"></clr-icon>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<clr-modal [(clrModalOpen)]="modals.createList">
+  <h3 class="modal-title">Create List</h3>
+  <div class="modal-body">
+    <clr-input-container>
+      <label>Title</label>
+      <input clrInput type="text" name="list-title" [(ngModel)]="data.newListName" />
+    </clr-input-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="modals.createList = false">Cancel</button>
+    <button type="button" class="btn btn-primary"
+      (click)="createList(data.newListName);modals.createList = false">Create</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="controls.editListModal" *ngIf="data.editingList">
+  <h3 class="modal-title">Edit List <em>{{data.editingList.title}}</em></h3>
+  <div class="modal-body">
+    <clr-input-container>
+      <label>Title</label>
+      <input clrInput type="text" name="list-title" [(ngModel)]="data.editingList.title" />
+    </clr-input-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="controls.editListModal = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="saveList(data.editingList)">Save</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="modals.createItem" *ngIf="data.newItem">
+  <h3 class="modal-title">Create Todo</h3>
+  <form clrForm class="modal-body">
+    <clr-input-container>
+      <label>Title</label>
+      <input clrInput type="text" name="title" [(ngModel)]="data.newItem.title" />
+    </clr-input-container>
+    <clr-date-container>
+      <label>Due</label>
+      <input type="date" clrDate name="due-date" [(clrDate)]="data.newItem.dueDate">
+    </clr-date-container>
+  </form>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="modals.createItem = false">Cancel</button>
+    <button type="button" class="btn btn-primary"
+      (click)="createItem(data.selectedList,data.newItem);modals.createItem = false">Ok</button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="controls.editItemModal" *ngIf="data.selectedItem">
+  <h3 class="modal-title">Edit Todo</h3>
+  <div class="modal-body">
+    <form name="edit-todo" clrForm *ngIf="controls.editItemModal">
+      <clr-input-container>
+        <label>Title</label>
+        <input clrInput type="text" name="title" [(ngModel)]="data.selectedItem.title" />
+      </clr-input-container>
+      <clr-select-container>
+        <label>Status</label>
+        <select clrSelect name="statuses" [(ngModel)]="data.selectedItem.status">
+          <option *ngFor="let status of statuses" [value]="status">{{status}}</option>
+        </select>
+      </clr-select-container>
+      <clr-date-container>
+        <label>Due</label>
+        <input type="date" clrDate name="due-date" [(clrDate)]="data.selectedItem.dueDate">
+      </clr-date-container>
+      <!--small style="display:block"><strong>Due Date</strong><span>{{data.selectedItem.dueDate | date: 'yyyy-MM-dd'}}</span></small>
+      <small style="display:block"><strong>Created</strong><span>{{data.selectedItem.created | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
+      <small-- style="display:block"><strong>Updated</strong><span>{{data.selectedItem.updated | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small-->
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="controls.editItemModal = false"
+      style="float:left">Close</button>
+    <div class="btn-group btn-primary">
+      <button type="button" class="btn btn-primary"
+        (click)="saveItem(data.selectedItem);controls.editItemModal = false">Save</button>
+      <div class="btn btn-outline" (click)="copyItem(item)">Copy</div>
+      <div class="btn btn-danger" (click)="deleteItem(data.selectedList,todo)">Delete</div>
+    </div>
+  </div>
+</clr-modal>

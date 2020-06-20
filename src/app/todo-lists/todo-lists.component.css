@@ -1,0 +1,41 @@
+.selected{
+  background: #eee;
+}
+.list{
+  cursor: pointer;
+}
+.list>.menu{
+  visibility: hidden;
+}
+.list:hover>.menu {
+  visibility: unset;
+}
+.list-item{
+  cursor: pointer;
+}
+.list-item>.menu{
+  visibility: hidden;
+}
+.float-right{
+  float: right;
+}
+.list-item:hover{
+  background: #999;
+  color: #333;
+}
+.list-item:hover>.menu{
+  visibility: unset;
+}
+[status='todo']{
+  color: #A11;
+  text-decoration: underline;
+}
+[status='progress']{
+  color: #FD1;
+}
+[status='done']{
+  color: #171;
+}
+::ng-deep .clr-popover-content.datepicker{
+  z-index: 9000;
+}
