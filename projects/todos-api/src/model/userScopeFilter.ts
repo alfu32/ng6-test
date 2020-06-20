@@ -10,12 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface TodoFields {
-    id?: boolean;
-    title?: boolean;
-    status?: string;
-    created?: Date;
-    updated?: Date;
-    dueDate?: Date;
-    todoListId?: boolean;
+export interface UserScopeFilter { 
+    offset?: number;
+    limit?: number;
+    skip?: number;
+    order?: Array<string>;
+    where?: { [key: string]: any; };
+    fields?: { [key: string]: any; };
 }

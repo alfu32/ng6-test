@@ -4,69 +4,38 @@
 .list{
   cursor: pointer;
 }
-.list:hover{
-  background: #999;
-  color: #333;
-  
+.list>.menu{
+  visibility: hidden;
+}
+.list:hover>.menu {
+  visibility: unset;
 }
 .list-item{
   cursor: pointer;
+}
+.list-item>.menu{
+  visibility: hidden;
+}
+.float-right{
+  float: right;
 }
 .list-item:hover{
   background: #999;
   color: #333;
 }
-/*.layout{
-  position: absolute;
-  box-sizing: border-box;
-  top:5px;
-  left:5px;
-  right:5px;
-  bottom:5px;
-  padding:3px;
-  background: #f00;
+.list-item:hover>.menu{
+  visibility: unset;
 }
-.layout>.top-bar{
-  display: flex;
-  top:5px;
-  left:5px;
-  right:5px;
-  max-height: 32px;
-  min-height: 32px;
-  padding:3px;
-  background: #f55;
+[status='todo']{
+  color: #A11;
+  text-decoration: underline;
 }
-.layout>.middle{
-  position: relative;
-  has-layout: true;
-  top:5px;
-  left:0px;
-  right:5px;
-  bottom:32px;
-  min-height: calc(100% - 84px);
-  padding:3px;
-  background: #f99;
+[status='progress']{
+  color: #FD1;
 }
-.layout>.middle>.left-panel{
-  position: absolute;
-  overflow-y: scroll;
-  top:5px;
-  min-width: 30%;
-  left:5px;
-  bottom:5px;
-  display: block;
-  padding:3px;
-  background: #33f;
+[status='done']{
+  color: #171;
 }
-.layout>.middle>.main-panel{
-  display: block;
-  position: absolute;
-  overflow-y: scroll;
-  top:5px;
-  left:30%;
-  right:5px;
-  bottom:5px;
-  padding:3px;
-  background: #77f;
+::ng-deep .clr-popover-content.datepicker{
+  z-index: 9000;
 }
-*/

@@ -11,11 +11,9 @@
  */
 
 /**
- * (tsType: Omit<Todo, 'id'>, schemaOptions: { title: 'NewTodo', exclude: [ 'id' ] })
+ * (tsType: @loopback/repository-json-schema#Optional<Omit<TodoList, 'id'>, 'userId'>, schemaOptions: { title: 'NewTodoListInUser', exclude: [ 'id' ], optional: [ 'userId' ] })
  */
-export interface NewTodo {
-    title?: string;
-    status?: string;
-    dueDate?: Date;
-    todoListId?: number;
+export interface NewTodoListInUser { 
+    title: string;
+    userId?: number;
 }

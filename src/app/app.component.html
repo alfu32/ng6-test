@@ -1,98 +1,129 @@
 <div class="main-container">
     <div class="alert alert-app-level">
-        alert message 2222
     </div>
     <header class="header header-6">
-          
       <img width="30" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-      <h3>Database [{{lists.length}}]</h3>
-      <div style="whitespace:no-wrap">
-        <input clrInput type="text" [(ngModel)]="data.newListName"/>
-        <button class="btn btn-primary" (click)="createList(data.newListName)">NEW LIST</button>
+      <h3 style="color:hsl(198, 0%, 91%);">Todo Lists [{{lists.length}}]</h3>
+      <div style="whitespace: no-wrap">
       </div>
     </header>
     <nav class="subnav">
     </nav>
+    <input type="hidden" #modals>
+    <input type="hidden" #selection>
     <div class="content-container">
         <div class="content-area">
+          <!--
+          <pre>{{data.selectedItem | json}}</pre>
+          <pre>{{controls.editItemModal | json}}</pre>
+          <pre>{{controls.editItemModal | json}}</pre>
+          -->
           <div *ngIf="data.selectedList">
-            <h1>{{list}}</h1>
             <div>
-              <input clrInput type="text" [(ngModel)]="data.newItemName"/>
-              <button class="btn btn-primary" (click)="createItem(data.selectedList,data.newItemName)">Create Item</button>
+              <h1>{{data.selectedList.list.title}}</h1>
+              <div class="btn-group btn-primary btn-sm">
+                <div class="btn"(click)="modals.createItem = true">Add</div>
+                <div class="btn">Edit</div>
+                <div class="btn btn-outline" (click)="copyList(item)">Copy</div>
+                <div class="btn btn-danger" (click)="deleteList(list)">Delete</div>
+              </div>
             </div>
-            <div *ngFor="let item of data.selectedList.items"
-              class="list-item">
-              <small>{{item.id}}</small>
-              <span>{{item.name}}</span>
-              <button class="btn btn-outline" (click)="deleteItem(data.selectedList,item)">Delete</button>
+            <div class="clr-row">
+              <div class="clr-col-4" *ngFor="let status of statuses" style="border-right:1px dotted #777;">
+                <h2 style="text-align: center;">{{status}}</h2>
+                <div *ngFor="let todo of data.selectedList.todos" class="list-item">
+                  <div *ngIf="todo.status === status" (click)="editItem(todo);">
+                      <span class="badge badge-1">#{{todo.id}}</span>
+                      <span>{{todo.title}}</span>
+                      <div style="margin-left: 24px">
+                        <small style="display:block"><strong>Due</strong> : <span>{{todo.dueDate | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
+                        <small style="display:block"><strong>Created</strong> : <span>{{todo.created | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
+                        <small style="display:block"><strong>Updated</strong> : <span>{{todo.updated | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
+                      </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <nav class="sidenav">
-          <div>
-            <span><input clrInput type="text" [(ngModel)]="data.searchTerm"/></span>
-            <span><button class="btn btn-outline" (click)="filterList(data.searchTerm)">Filter</button></span>
-          </div>
-          <div *ngFor="let list of lists" (click)="selectList(list)"
-            [ngClass]="{'selected':list===data.selectedList}"
+          <div *ngFor="let item of lists"
+            [ngClass]="{'selected':item===data.selectedList}"
             class="list">
-            <small>{{list.id}}</small>
-            <span>{{list.name}}</span>
-            <sup>{{list.items.length}} items</sup>
-            <button class="btn btn-outline" (click)="deleteList(list)">Delete</button>
+            <div (click)="selectList(item)" style="display:inline-block">
+              <span>#{{item.list.id}}</span>
+              <span> {{item.list.title}} </span>
+              <span class="badge badge-blue float-right" style="display:inline-block">{{item.todosCount}}</span>
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-link float-right" (click)="modals.createList = true" title="Create List" style="min-width:48px;max-width:48px;max-height:48px;min-height:48px;border-radius:50%">
+              <clr-icon shape="plus-circle"></clr-icon>
+            </button>
           </div>
         </nav>
     </div>
 </div>
-
-
-
-
-<!--The content below is only a placeholder and can be replaced.-->
-<!--div class="layout">
-  <div class="top-bar">
-
-    <img width="30" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-    <h3>Database [{{lists.length}}]</h3>
-    <div>
-      <span><input type="text" [(ngModel)]="data.newListName"/></span>
-      <span><button (click)="createList(data.newListName)">Create</button></span>
-    </div>
-    <div>
-      <span><input type="text" [(ngModel)]="data.searchTerm"/></span>
-      <span><button (click)="filterList(data.searchTerm)">Filter</button></span>
+<clr-modal [(clrModalOpen)]="modals.createList">
+  <h3 class="modal-title">Create List</h3>
+  <div class="modal-body">
+    Name: <input clrInput type="text" [(ngModel)]="data.newListName" />
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="modals.createList = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="createList(data.newListName);modals.createList = false">Create</button>
+  </div>
+</clr-modal>
+<clr-modal [(clrModalOpen)]="modals.createItem">
+  <h3 class="modal-title">Create Todo</h3>
+  <form clrForm class="modal-body">
+    <clr-input-container>
+      <label>Title</label>
+      <input clrInput type="text" name="title" [(ngModel)]="data.newItemName" />
+    </clr-input-container>
+    <clr-date-container>
+      <label>Due</label>
+      <input type="date" clrDate name="due-date" [(ngModel)]="data.newItemDueDate">
+    </clr-date-container>
+  </form>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="modals.createItem = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="createItem(data.selectedList,data.newItemName);modals.createItem = false">Ok</button>
+  </div>
+</clr-modal>
+<clr-modal [(clrModalOpen)]="controls.editItemModal">
+  <h3 class="modal-title">Edit Todo</h3>
+  <div class="modal-body">
+    <form name="edit-todo" clrForm *ngIf="controls.editItemModal">
+      <clr-input-container>
+        <label>Title</label>
+        <input clrInput type="text" name="title" [(ngModel)]="data.selectedItem.title" />
+      </clr-input-container>
+      <clr-select-container>
+        <label>Status</label>
+        <select clrSelect name="statuses" [(ngModel)]="data.selectedItem.status">
+          <option *ngFor="let status of statuses" [value]="status">{{status}}</option>
+        </select>
+      </clr-select-container>
+      <clr-date-container>
+        <label>Due</label>
+        <input type="date" clrDate name="due-date" [(ngModel)]="data.selectedItem.dueDate">
+      </clr-date-container>
+      <clr-date-container>
+        <label>Created Date</label>
+        <input type="date" clrDate name="created-date" [(ngModel)]="data.selectedItem.created">
+      </clr-date-container>
+      <small style="display:block"><strong>Due Date</strong><span>{{data.selectedItem.dueDate | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
+      <small style="display:block"><strong>Created</strong><span>{{data.selectedItem.created | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
+      <small style="display:block"><strong>Updated</strong><span>{{data.selectedItem.updated | date: 'yyyy-MM-dd hh:mm:ss'}}</span></small>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="controls.editItemModal = false" style="float:left">Close</button>
+    <div class="btn-group btn-primary">
+      <button type="button" class="btn btn-primary" (click)="saveItem(data.selectedItem);controls.editItemModal = false">Save</button>
+      <div class="btn btn-outline" (click)="copyItem(item)">Copy</div>
+      <div class="btn btn-danger" (click)="deleteItem(data.selectedList,todo)">Delete</div>
     </div>
   </div>
-  <div class="middle">
-    <div class="left-panel">
-      <div *ngFor="let list of lists" (click)="selectList(list)"
-        [ngClass]="{'selected':list===data.selectedList}"
-        class="list">
-        <small>{{list.id}}</small>
-        <span>{{list.name}}</span>
-        <sup>{{list.items.length}} items</sup>
-        <button (click)="deleteList(list)">Delete</button>
-      </div>
-    </div>
-    <div class="main-panel">
-      <div *ngIf="data.selectedList">
-        <h1>{{list}}</h1>
-        <div>
-          <span><input type="text" [(ngModel)]="data.newItemName"/></span>
-          <span><button (click)="createItem(data.selectedList,data.newItemName)">Create Item</button></span>
-        </div>
-        <div *ngFor="let item of data.selectedList.items"
-          class="list-item">
-          <small>{{item.id}}</small>
-          <span>{{item.name}}</span>
-          <button (click)="deleteItem(data.selectedList,item)">Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <pre>
-    {{ data | json }}
-  </pre>
-</div-->
-
+</clr-modal>

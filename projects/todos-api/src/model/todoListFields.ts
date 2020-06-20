@@ -9,11 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { PingResponseHeaders } from './pingResponseHeaders';
 
-export interface PingResponse { 
-    greeting?: string;
-    date?: string;
-    url?: string;
-    headers?: PingResponseHeaders;
+export interface TodoListFields { 
+    id?: boolean;
+    title?: boolean;
+    userId?: boolean;
 }

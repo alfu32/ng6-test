@@ -24,7 +24,18 @@
       ],
       "typescript-angular-client-generated/*": [
         "dist/typescript-angular-client-generated/*"
+      ],
+      "todos-api": [
+        "dist/todos-api"
+      ],
+      "todos-api/*": [
+        "dist/todos-api/*"
       ]
     }
-  }
+  },
+  "include":[
+    "projects/todos-api/dist/public_api.d.ts",
+    "src/main.ts",
+    "src/polyfills.ts"
+  ]
 }

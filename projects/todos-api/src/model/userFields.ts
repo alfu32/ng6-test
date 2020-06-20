@@ -10,12 +10,9 @@
  * Do not edit the class manually.
  */
 
-export interface TodoFields {
+export interface UserFields { 
     id?: boolean;
-    title?: boolean;
-    status?: string;
-    created?: Date;
-    updated?: Date;
-    dueDate?: Date;
-    todoListId?: boolean;
+    name?: boolean;
+    email?: boolean;
+    active?: boolean;
 }

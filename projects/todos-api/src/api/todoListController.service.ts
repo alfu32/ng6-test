@@ -18,27 +18,23 @@ import { CustomHttpUrlEncodingCodec } from '../encoder';
 import { Observable } from 'rxjs';
 
 import { LoopbackCount } from '../model/loopbackCount';
-import { NewTodo } from '../model/newTodo';
-import { Todo } from '../model/todo';
-import { TodoPartial } from '../model/todoPartial';
-import { TodoWithRelations } from '../model/todoWithRelations';
+import { NewTodoList } from '../model/newTodoList';
+import { TodoList } from '../model/todoList';
+import { TodoListPartial } from '../model/todoListPartial';
+import { TodoListWithRelations } from '../model/todoListWithRelations';
 
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
 
 
 @Injectable()
-export class TodoControllerService {
+export class TodoListControllerService {
 
     protected basePath = 'http://localhost:3000';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
-    constructor(
-        protected httpClient: HttpClient,
-        @Optional()@Inject(BASE_PATH) basePath: string,
-        @Optional() configuration: Configuration,
-    ) {
+    constructor(protected httpClient: HttpClient, @Optional()@Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration) {
         if (basePath) {
             this.basePath = basePath;
         }
@@ -70,57 +66,16 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerCount(queryParams?: string, observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
-    public todoControllerCount(queryParams?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
-    public todoControllerCount(queryParams?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
-    public todoControllerCount(queryParams?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoListControllerCount(queryParams?: string, observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
+    public todoListControllerCount(queryParams?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
+    public todoListControllerCount(queryParams?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
+    public todoListControllerCount(queryParams?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if ( queryParams !== undefined && queryParams !== null) {
-            queryParameters = queryParameters.set('where', encodeURIComponent(queryParams));
+            queryParameters = queryParameters.set('where', queryParams);
         }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<LoopbackCount>('get', `${this.basePath}/todos/count`,
-            {
-                params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     *
-     *
-     * @param
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public todoControllerStatuses(observe?: 'body', reportProgress?: boolean): Observable<string[]>;
-    public todoControllerStatuses(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string[]>>;
-    public todoControllerStatuses(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string[]>>;
-    public todoControllerStatuses(observe: any = 'body', reportProgress: boolean = false): Observable<any> {
-
-
-        const queryParameters = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
 
         let headers = this.defaultHeaders;
 
@@ -137,7 +92,7 @@ export class TodoControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<string[]>('get', `${this.basePath}/todos/statuses`,
+        return this.httpClient.request<LoopbackCount>('get', `${this.basePath}/todo-lists/count`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -155,10 +110,10 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerCreate(body?: NewTodo, observe?: 'body', reportProgress?: boolean): Observable<Todo>;
-    public todoControllerCreate(body?: NewTodo, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Todo>>;
-    public todoControllerCreate(body?: NewTodo, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Todo>>;
-    public todoControllerCreate(body?: NewTodo, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoListControllerCreate(body?: NewTodoList, observe?: 'body', reportProgress?: boolean): Observable<TodoList>;
+    public todoListControllerCreate(body?: NewTodoList, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TodoList>>;
+    public todoListControllerCreate(body?: NewTodoList, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TodoList>>;
+    public todoListControllerCreate(body?: NewTodoList, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let headers = this.defaultHeaders;
@@ -168,7 +123,7 @@ export class TodoControllerService {
             'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
+        if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
@@ -177,11 +132,11 @@ export class TodoControllerService {
             'application/json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
+        if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<Todo>('post', `${this.basePath}/todos`,
+        return this.httpClient.request<TodoList>('post', `${this.basePath}/todo-lists`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -195,23 +150,23 @@ export class TodoControllerService {
     /**
      *
      *
-     * @param id
+     * @param
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerDeleteById(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public todoControllerDeleteById(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public todoControllerDeleteById(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public todoControllerDeleteById(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoControllerCountById(id: number,  observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
+    public todoControllerCountById(id: number,  observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
+    public todoControllerCountById(id: number,  observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
+    public todoControllerCountById(id: number,  observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling todoControllerDeleteById.');
-        }
+
+        const queryParameters = new HttpParams({ encoder: new CustomHttpUrlEncodingCodec() });
 
         let headers = this.defaultHeaders;
 
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
+            'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -222,7 +177,47 @@ export class TodoControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('delete', `${this.basePath}/todos/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<LoopbackCount>('get', `${this.basePath}/todo-lists/${encodeURIComponent(String(id))}/count`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+    /**
+     *
+     *
+     * @param id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public todoListControllerDeleteById(id: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public todoListControllerDeleteById(id: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public todoListControllerDeleteById(id: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public todoListControllerDeleteById(id: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling todoListControllerDeleteById.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<any>('delete', `${this.basePath}/todo-lists/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -239,15 +234,15 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerFind(queryParams?: string, observe?: 'body', reportProgress?: boolean): Observable<Array<TodoWithRelations>>;
-    public todoControllerFind(queryParams?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TodoWithRelations>>>;
-    public todoControllerFind(queryParams?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TodoWithRelations>>>;
-    public todoControllerFind(queryParams?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoListControllerFind(queryParams?: string, observe?: 'body', reportProgress?: boolean): Observable<Array<TodoListWithRelations>>;
+    public todoListControllerFind(queryParams?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TodoListWithRelations>>>;
+    public todoListControllerFind(queryParams?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TodoListWithRelations>>>;
+    public todoListControllerFind(queryParams?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if ( queryParams !== undefined && queryParams !== null) {
-            queryParameters = queryParameters.set('filter', (queryParams));
+            queryParameters = queryParameters.set('filter', queryParams);
         }
 
         let headers = this.defaultHeaders;
@@ -257,7 +252,7 @@ export class TodoControllerService {
             'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
+        if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
@@ -265,7 +260,7 @@ export class TodoControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<TodoWithRelations>>('get', `${this.basePath}/todos`,
+        return this.httpClient.request<Array<TodoListWithRelations>>('get', `${this.basePath}/todo-lists`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -284,19 +279,19 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerFindById(id: number, queryParams?: string, observe?: 'body', reportProgress?: boolean): Observable<TodoWithRelations>;
-    public todoControllerFindById(id: number, queryParams?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TodoWithRelations>>;
-    public todoControllerFindById(id: number, queryParams?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TodoWithRelations>>;
-    public todoControllerFindById(id: number, queryParams?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoListControllerFindById(id: number, queryParams?: string, observe?: 'body', reportProgress?: boolean): Observable<TodoListWithRelations>;
+    public todoListControllerFindById(id: number, queryParams?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<TodoListWithRelations>>;
+    public todoListControllerFindById(id: number, queryParams?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<TodoListWithRelations>>;
+    public todoListControllerFindById(id: number, queryParams?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling todoControllerFindById.');
+            throw new Error('Required parameter id was null or undefined when calling todoListControllerFindById.');
         }
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if ( queryParams !== undefined && queryParams !== null) {
-            queryParameters = queryParameters.set('filter', encodeURIComponent(queryParams));
+            queryParameters = queryParameters.set('filter', queryParams);
         }
 
         let headers = this.defaultHeaders;
@@ -306,7 +301,7 @@ export class TodoControllerService {
             'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
+        if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
@@ -314,7 +309,7 @@ export class TodoControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<TodoWithRelations>('get', `${this.basePath}/todos/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<TodoListWithRelations>('get', `${this.basePath}/todo-lists/${encodeURIComponent(String(id))}`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -333,13 +328,13 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerReplaceById(id: number, body?: Todo, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public todoControllerReplaceById(id: number, body?: Todo, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public todoControllerReplaceById(id: number, body?: Todo, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public todoControllerReplaceById(id: number, body?: Todo, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoListControllerReplaceById(id: number, body?: TodoList, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public todoListControllerReplaceById(id: number, body?: TodoList, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public todoListControllerReplaceById(id: number, body?: TodoList, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public todoListControllerReplaceById(id: number, body?: TodoList, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling todoControllerReplaceById.');
+            throw new Error('Required parameter id was null or undefined when calling todoListControllerReplaceById.');
         }
 
 
@@ -349,7 +344,7 @@ export class TodoControllerService {
         const httpHeaderAccepts: string[] = [
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
+        if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
@@ -358,11 +353,11 @@ export class TodoControllerService {
             'application/json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
+        if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('put', `${this.basePath}/todos/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<any>('put', `${this.basePath}/todo-lists/${encodeURIComponent(String(id))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -381,16 +376,16 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerUpdateAll(body?: TodoPartial, queryParams?: string, observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
-    public todoControllerUpdateAll(body?: TodoPartial, queryParams?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
-    public todoControllerUpdateAll(body?: TodoPartial, queryParams?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
-    public todoControllerUpdateAll(body?: TodoPartial, queryParams?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoListControllerUpdateAll(body?: TodoListPartial, queryParams?: string, observe?: 'body', reportProgress?: boolean): Observable<LoopbackCount>;
+    public todoListControllerUpdateAll(body?: TodoListPartial, queryParams?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LoopbackCount>>;
+    public todoListControllerUpdateAll(body?: TodoListPartial, queryParams?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LoopbackCount>>;
+    public todoListControllerUpdateAll(body?: TodoListPartial, queryParams?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if ( queryParams !== undefined && queryParams !== null) {
-            queryParameters = queryParameters.set('where', encodeURIComponent(queryParams));
+            queryParameters = queryParameters.set('where', queryParams);
         }
 
         let headers = this.defaultHeaders;
@@ -400,7 +395,7 @@ export class TodoControllerService {
             'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
+        if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
@@ -409,11 +404,11 @@ export class TodoControllerService {
             'application/json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
+        if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<LoopbackCount>('patch', `${this.basePath}/todos`,
+        return this.httpClient.request<LoopbackCount>('patch', `${this.basePath}/todo-lists`,
             {
                 body: body,
                 params: queryParameters,
@@ -433,13 +428,13 @@ export class TodoControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public todoControllerUpdateById(id: number, body?: TodoPartial, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public todoControllerUpdateById(id: number, body?: TodoPartial, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public todoControllerUpdateById(id: number, body?: TodoPartial, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public todoControllerUpdateById(id: number, body?: TodoPartial, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public todoListControllerUpdateById(id: number, body?: TodoListPartial, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public todoListControllerUpdateById(id: number, body?: TodoListPartial, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public todoListControllerUpdateById(id: number, body?: TodoListPartial, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public todoListControllerUpdateById(id: number, body?: TodoListPartial, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling todoControllerUpdateById.');
+            throw new Error('Required parameter id was null or undefined when calling todoListControllerUpdateById.');
         }
 
 
@@ -449,7 +444,7 @@ export class TodoControllerService {
         const httpHeaderAccepts: string[] = [
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
+        if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
@@ -458,11 +453,11 @@ export class TodoControllerService {
             'application/json'
         ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
+        if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('patch', `${this.basePath}/todos/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<any>('patch', `${this.basePath}/todo-lists/${encodeURIComponent(String(id))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

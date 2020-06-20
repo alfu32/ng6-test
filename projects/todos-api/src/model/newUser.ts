@@ -10,12 +10,11 @@
  * Do not edit the class manually.
  */
 
-export interface TodoFields {
-    id?: boolean;
-    title?: boolean;
-    status?: string;
-    created?: Date;
-    updated?: Date;
-    dueDate?: Date;
-    todoListId?: boolean;
+/**
+ * (tsType: Omit<User, 'id'>, schemaOptions: { title: 'NewUser', exclude: [ 'id' ] })
+ */
+export interface NewUser { 
+    name?: string;
+    email: string;
+    active?: boolean;
 }

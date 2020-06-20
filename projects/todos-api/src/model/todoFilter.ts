@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { TodoFields } from './todoFields';
+import { TodoIncludeFilterItems } from './todoIncludeFilterItems';
 
 export interface TodoFilter { 
     offset?: number;
@@ -17,4 +18,5 @@ export interface TodoFilter {
     skip?: number;
     order?: Array<string>;
     fields?: TodoFields;
+    include?: Array<TodoIncludeFilterItems>;
 }

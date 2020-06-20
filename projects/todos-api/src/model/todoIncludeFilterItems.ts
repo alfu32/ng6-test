@@ -9,13 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { TodoScopeFilter } from './todoScopeFilter';
 
-export interface TodoFields {
-    id?: boolean;
-    title?: boolean;
-    status?: string;
-    created?: Date;
-    updated?: Date;
-    dueDate?: Date;
-    todoListId?: boolean;
+export interface TodoIncludeFilterItems { 
+    relation?: string;
+    scope?: TodoScopeFilter;
 }

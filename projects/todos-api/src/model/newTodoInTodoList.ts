@@ -10,12 +10,12 @@
  * Do not edit the class manually.
  */
 
-export interface TodoFields {
-    id?: boolean;
-    title?: boolean;
+/**
+ * (tsType: @loopback/repository-json-schema#Optional<Omit<Todo, 'id'>, 'todoListId'>, schemaOptions: { title: 'NewTodoInTodoList', exclude: [ 'id' ], optional: [ 'todoListId' ] })
+ */
+export interface NewTodoInTodoList {
+    title?: string;
     status?: string;
-    created?: Date;
-    updated?: Date;
     dueDate?: Date;
-    todoListId?: boolean;
+    todoListId?: number;
 }

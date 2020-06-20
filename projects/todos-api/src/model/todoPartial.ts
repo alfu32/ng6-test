@@ -16,5 +16,9 @@
 export interface TodoPartial { 
     id?: number;
     title?: string;
-    isComplete?: boolean;
+    status?: string;
+    created?: Date;
+    updated?: Date;
+    dueDate?: Date;
+    todoListId?: number;
 }

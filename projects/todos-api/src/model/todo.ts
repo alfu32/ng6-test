@@ -10,8 +10,12 @@
  * Do not edit the class manually.
  */
 
-export interface Todo { 
+export interface Todo {
     id?: number;
     title?: string;
-    isComplete?: boolean;
+    status?: string;
+    created?: Date;
+    updated?: Date;
+    dueDate?: Date;
+    todoListId?: number;
 }

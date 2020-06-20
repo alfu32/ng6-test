@@ -10,6 +10,9 @@
  * Do not edit the class manually.
  */
 
-export interface PingResponseHeaders { 
-    contentType?: string;
+export interface User { 
+    id?: number;
+    name?: string;
+    email: string;
+    active?: boolean;
 }
