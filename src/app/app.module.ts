@@ -7,12 +7,13 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ListItemComponent } from './list-item/list-item.component';
-import { ListService } from './list.service';
+import { ListService } from './service/list.service';
+import { UserDetailsService } from './service/user-details.service';
 import { ApiModule as TodosApiModule, APIS as TODOS_SERVICES } from '../external/todos-api.external.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './components/login/login.component';
-import { TodoListsComponent } from './todo-lists/todo-lists.component'; 
+import { TodoListsComponent } from './todo-lists/todo-lists.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { TodoListsComponent } from './todo-lists/todo-lists.component';
     AppRoutingModule,
   ],
   providers: [
-    ListService,
+     ListService,
+     UserDetailsService,
   ],
   bootstrap: [AppComponent]
 })

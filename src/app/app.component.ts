@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ListService } from './list.service';
+import { ListService } from './service/list.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import {
@@ -35,5 +35,13 @@ export class AppComponent {
     };
   constructor(
   ) {
+    if (!this.data.userDetails) {
+      this.data.userDetails = {
+        id: 1,
+        email: 'alferarui@login.com',
+        name: 'alfu',
+        active: true,
+      };
+    }
   }
 }

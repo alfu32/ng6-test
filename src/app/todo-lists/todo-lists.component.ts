@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListService } from '../list.service';
+import { ListService } from '../service/list.service';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import {
